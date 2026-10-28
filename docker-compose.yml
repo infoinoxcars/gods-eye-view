@@ -1,0 +1,39 @@
+services:
+  gods-eye-view:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gods_eye_view
+    restart: unless-stopped
+    ports:
+      - "4173:4173"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=4173
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY:-}
+      - GOOGLE_MAPS_SERVER_API_KEY=${GOOGLE_MAPS_SERVER_API_KEY:-}
+      - CESIUM_ION_TOKEN=${CESIUM_ION_TOKEN:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - AISSTREAM_API_KEY=${AISSTREAM_API_KEY:-}
+      - FIRMS_MAP_KEY=${FIRMS_MAP_KEY:-}
+      - TOMTOM_API_KEY=${TOMTOM_API_KEY:-}
+      - OPENSKY_CLIENT_ID=${OPENSKY_CLIENT_ID:-}
+      - OPENSKY_CLIENT_SECRET=${OPENSKY_CLIENT_SECRET:-}
+      - LL2_API_TOKEN=${LL2_API_TOKEN:-}
+    volumes:
+      - gev_cache:/app/.gev-cache
+    networks:
+      - gev_network
+    security_opt:
+      - no-new-privileges:true
+    cpus: 2.0
+    mem_limit: 2048M
+
+volumes:
+  gev_cache:
+    name: gev_cache
+
+networks:
+  gev_network:
+    name: gev_network
+    driver: bridge
